@@ -67,10 +67,6 @@ const needsAandC = ({a, c} : SubContext<'a' | 'c'>) => {
     return Hidden("not allowed");
 }
 
-const all = [needsAndB, needsA, needsAandC];
-const onlyA = [needsA, alsoNeedsA];
-const justAandB = [needsAndB, needsA, alsoNeedsA];
-
 function runPredicates<T extends Partial<Context>>(
     predicates: ((props: T) => Result)[],
     props: T
@@ -84,13 +80,13 @@ function runPredicates<T extends Partial<Context>>(
     return Allowed;
 }
 
-runPredicates(all, {a: 'allowed', b: 1, c: true});
-runPredicates(all, {a: 'allowed', b: 1});
-runPredicates(all, {a: 'allowed', c: true});
-runPredicates(onlyA, {a: 'allowed', c: true});
-runPredicates(onlyA, {a: 'allowed'});
-runPredicates(onlyA, {b: 1});
-runPredicates(justAandB, {a: 'allowed', b: 1});
-runPredicates(justAandB, {a: 'allowed', c: true});
-runPredicates(justAandB, {a: 'allowed'});
-runPredicates(justAandB, {b: 1});
+runPredicates([needsAndB, needsA, needsAandC], {a: 'allowed', b: 1, c: true});
+runPredicates([needsAndB, needsA, needsAandC], {a: 'allowed', b: 1});
+runPredicates([needsAndB, needsA, needsAandC], {a: 'allowed', c: true});
+runPredicates([needsA, alsoNeedsA], {a: 'allowed', c: true});
+runPredicates([needsA, alsoNeedsA], {a: 'allowed'});
+runPredicates([needsA, alsoNeedsA], {b: 1});
+runPredicates([needsAndB, needsA, alsoNeedsA], {a: 'allowed', b: 1});
+runPredicates([needsAndB, needsA, alsoNeedsA], {a: 'allowed', c: true});
+runPredicates([needsAndB, needsA, alsoNeedsA], {a: 'allowed'});
+runPredicates([needsAndB, needsA, alsoNeedsA], {b: 1});
